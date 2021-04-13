@@ -1,3 +1,3 @@
 
-__all__ = ["fornitore", "fastweb", "a2a"]
+__all__ = ["fornitore", "fastweb", "a2a", "ruzzo"]
 
