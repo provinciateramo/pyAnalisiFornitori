@@ -8,14 +8,17 @@ import csv
 
 from plugins import *
 from utils import parse_parametri
+from writer import plugins_writer
 
 def main(argv):
-    inputfolder, fornitore_key, outputfile = parse_parametri(argv)
-    print(inputfolder, fornitore_key, outputfile)
+    inputfolder, fornitore_key, outputfile, oformat = parse_parametri(argv)
+    print(inputfolder, fornitore_key, outputfile, oformat)
     c = fornitore.plugins_fatture.get(fornitore_key, None)
     if not c is None:
-        f = c(csvfile=outputfile, inputfolder=inputfolder)
-        f.genera_csv()
+        w = plugins_writer.get(oformat, 'csv')
+        owriter = w(oformat, outputfile)
+        f = c(csvfile=outputfile, inputfolder=inputfolder, outputwriter=owriter)
+        f.genera_output()
         print('File %s generato con successo' % outputfile)
     else:
        print('Plugin non trovato per il fornitore')

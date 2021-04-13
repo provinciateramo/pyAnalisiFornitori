@@ -4,13 +4,13 @@ from decimal import Decimal as D
 from .fornitore import PluginFornitore, register_plugin_fattura
 
 class Fastweb(PluginFornitore):
-    def __init__(self, csvfile='dati.csv', inputfolder='./'):
+    def __init__(self, csvfile='dati.csv', inputfolder='./', outputwriter=None):
         self.fornitore = 'fastweb'
-        super(Fastweb,self).__init__(self.fornitore, csvfile, inputfolder)
+        super(Fastweb,self).__init__(self.fornitore, csvfile, inputfolder, outputwriter)
 
     def parse_fattura(self, nomefile):
         data = {'centro_fatturazione': '', 'importo': D(0.0)}
-        fattura = ET.parse(nomefile)
+        fattura = ET.parse(self.path_to_fattura(nomefile))
         root = fattura.getroot()
         nodo_allegato = root.findall(".//Allegati/NomeAttachment")[0]
         if not nodo_allegato is None:
